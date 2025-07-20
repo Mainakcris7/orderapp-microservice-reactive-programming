@@ -6,7 +6,7 @@ This project simulates a simple order booking system with distributed services l
 
 ![Spring Cloud](https://i.loli.net/2021/11/06/ItBZXMEsqJ9knY4.png)
 ![JWT](https://jwt.io/img/logo-asset.svg)
-![Docker](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdU88G8HSPDSiBQvGxEpA6ZqnLB7UhwU1caCQY_UQ72HRM7qDfJnBYGYlpWgLhTUzyCL8&usqp=CAU)
+![Docker](https://upload.wikimedia.org/wikipedia/commons/7/70/Docker_logo.png)
 ---
 
 ## 🧱 Tech Stack
