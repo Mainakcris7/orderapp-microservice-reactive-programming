@@ -1,0 +1,123 @@
+services:
+  # Api Gateway for the Microservices
+  api_gateway:
+    build: ./apigateway/apigateway
+    container_name: api_gateway
+    restart: on-failure
+    ports:
+      - '7777:7777'
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+      EUREKA_INSTANCE_PREFER_IP_ADDRESS: true
+      EUREKA_INSTANCE_INSTANCE_ID: apigateway
+    depends_on:
+      - eureka_server
+
+  # Microservice 1: Authentication Service
+  auth_service:
+    build: ./authservice/authservice
+    container_name: auth_service
+    restart: on-failure
+    ports:
+      - '1111:1111'
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+      EUREKA_INSTANCE_PREFER_IP_ADDRESS: true
+      EUREKA_INSTANCE_INSTANCE_ID: authservice
+      SPRING_R2DBC_URL: r2dbc:mysql://mysql:3306/order_booking_db
+      SPRING_R2DBC_USERNAME: <USERNAME>
+      SPRING_R2DBC_PASSWORD: <PASSWORD>
+    depends_on:
+      - mysql
+      - eureka_server
+
+  # Microservice 2: Customer Service
+  customer_service:
+    build: ./customerservice/customerservice
+    container_name: customer_service
+    restart: on-failure
+    ports:
+      - '7070:7070'
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+      EUREKA_INSTANCE_PREFER_IP_ADDRESS: true
+      EUREKA_INSTANCE_INSTANCE_ID: customerservice
+      SPRING_R2DBC_URL: r2dbc:mysql://mysql:3306/order_booking_db
+      SPRING_R2DBC_USERNAME: <USERNAME>
+      SPRING_R2DBC_PASSWORD: <PASSWORD>
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: 5672
+      SPRING_RABBITMQ_USERNAME: <USERNAME>
+      SPRING_RABBITMQ_PASSWORD: <PASSWORD>
+    depends_on:
+      - mysql
+      - eureka_server
+      - rabbitmq
+
+  # Eureka Discovery Server
+  eureka_server:
+    build: ./eurekaserver/eurekaserver
+    container_name: eureka-server
+    restart: on-failure
+    ports:
+      - '8761:8761'
+
+  # Microservice 3: Order Service
+  order_service:
+    build: ./orderservice/orderservice
+    container_name: order_service
+    restart: on-failure
+    ports:
+      - '9090:9090'
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+      EUREKA_INSTANCE_PREFER_IP_ADDRESS: true
+      EUREKA_INSTANCE_INSTANCE_ID: orderservice
+      SPRING_R2DBC_URL: r2dbc:mysql://mysql:3306/order_booking_db
+      SPRING_R2DBC_USERNAME: <USERNAME>
+      SPRING_R2DBC_PASSWORD: <PASSWORD>
+    depends_on:
+      - mysql
+      - eureka_server
+
+  # Microservice 4: Notification Service
+  notification_service:
+    build: ./notificationservice/notificationservice
+    container_name: notification_service
+    restart: on-failure
+    ports:
+      - '8080:8080'
+    environment:
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: 5672
+      SPRING_RABBITMQ_USERNAME: <USERNAME>
+      SPRING_RABBITMQ_PASSWORD: <PASSWORD>
+    depends_on:
+      - rabbitmq
+
+  # MySQL DB
+  mysql:
+    image: mysql:latest
+    container_name: mysql_engine
+    restart: always
+    ports:
+      - '3307:3306'
+    environment:
+      MYSQL_DATABASE: order_booking_db
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: <USERNAME>
+      MYSQL_PASSWORD: <PASSWORD>
+    volumes:
+      - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql  # To initialize the MySQL instance with some tables and DB
+
+  # Rabbit MQ for asynchronous communication b/w microservices
+  rabbitmq:
+    image: rabbitmq:4.1.2-management-alpine
+    container_name: rabbitmq
+    restart: always
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+    environment:
+      RABBITMQ_DEFAULT_USER: <USERNAME>
+      RABBITMQ_DEFAULT_PASS: <PASSWORD>

@@ -1,0 +1,11 @@
+# Some properties will get overridden when running the docker compose file with the ENV variables
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
+rabbitmq:
+  queue: order-notification
+  routing-key: routing-key-order-notification
+  exchange: notification-exchange

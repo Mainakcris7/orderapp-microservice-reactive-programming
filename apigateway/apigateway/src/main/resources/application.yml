@@ -1,0 +1,43 @@
+# Some properties will get overridden when running the docker compose file with the ENV variables
+eureka:
+  client:
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+  instance:
+    prefer-ip-address: true
+
+# Defining routes various Microservices
+spring:
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+            - id: ordersapi
+              uri: lb://ORDERSERVICE
+              predicates:
+                - Path=/orders/**
+              filters:
+                - AuthFilter
+
+            - id: productapi
+              uri: lb://ORDERSERVICE
+              predicates:
+                - Path=/products/**
+              filters:
+                - AuthFilter
+
+            - id: customerapi
+              uri: lb://CUSTOMERSERVICE
+              predicates:
+                - Path=/customers/**
+              filters:
+                - AuthFilter
+
+            - id: authapi
+              uri: lb://AUTHSERVICE
+              predicates:
+                - Path=/auth/**
+              filters:
+                - AuthFilter
