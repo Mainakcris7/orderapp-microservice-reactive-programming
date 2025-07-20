@@ -4,10 +4,11 @@ A reactive, cloud-native **Microservices Architecture** built using **Spring Boo
 
 This project simulates a simple order booking system with distributed services like customer management, order placement, authentication, and notifications—all communicating synchronously/asynchronously and registered under a centralized Eureka discovery service.
 
-![Spring Cloud](https://i.loli.net/2021/11/06/ItBZXMEsqJ9knY4.png)
-![JWT](https://jwt.io/img/logo-asset.svg)
-![Docker](https://upload.wikimedia.org/wikipedia/commons/7/70/Docker_logo.png)
----
+## 🔧 Technologies Used
+
+| Spring Cloud | JWT | Docker |
+|--------------|-----|--------|
+| <img src="https://i.loli.net/2021/11/06/ItBZXMEsqJ9knY4.png" width="100"/> | <img src="https://jwt.io/img/logo-asset.svg" width="100"/> | <img src="https://upload.wikimedia.org/wikipedia/commons/7/70/Docker_logo.png" width="100"/> |
 
 ## 🧱 Tech Stack
 
