@@ -4,7 +4,7 @@ A reactive, cloud-native **Microservices Architecture** built using **Spring Boo
 
 This project simulates a simple order booking system with distributed services like customer management, order placement, authentication, and notifications—all communicating synchronously/asynchronously and registered under a centralized Eureka discovery service.
 
-![Spring Cloud](https://img.icons8.com/?size=512&id=90519&format=png)
+![Spring Cloud](https://i.loli.net/2021/11/06/ItBZXMEsqJ9knY4.png)
 ![JWT](https://jwt.io/img/logo-asset.svg)
 ![Docker](https://e7.pngegg.com/pngimages/39/564/png-clipart-docker-logo-landscape-tech-companies.png)
 ---
